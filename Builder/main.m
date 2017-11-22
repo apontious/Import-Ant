@@ -8,10 +8,18 @@
 
 @import Foundation;
 
+#import "AntBuilder.h"
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        NSCAssert(argc == 2, @"There should be 2 passed in arguments, but instead there are %ld", (long)argc);
+
+        NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
+
+        AntBuilder *antBuilder = [[AntBuilder alloc] initWithCount:10];
+
+        [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"01 Import By Module"]];
+        [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"02 Import Individually"]];
     }
     return 0;
 }
