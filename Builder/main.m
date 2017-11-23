@@ -16,7 +16,7 @@ int main(int argc, const char * argv[]) {
 
         NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
 
-        AntBuilder *antBuilder = [[AntBuilder alloc] initWithCount:10];
+        AntBuilder *antBuilder = [[AntBuilder alloc] initWithCount:100];
 
         [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"01 Import By Module"]];
         [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"02 Import Individually"]];
