@@ -9,12 +9,14 @@
 @import Foundation;
 
 #import "AntBuilder.h"
+#import "HillBuilder.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSCAssert(argc == 2, @"There should be 2 passed in arguments, but instead there are %ld", (long)argc);
 
         AntBuilder *antBuilder = [[AntBuilder alloc] initWithCount:100];
+        HillBuilder *hillBuilder = [[HillBuilder alloc] initWithCount:5000 antBuilder:antBuilder];
 
         NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
         NSString *testsPath = [workspacePath stringByAppendingPathComponent:@"Tests"];
@@ -24,6 +26,7 @@ int main(int argc, const char * argv[]) {
 
             [antBuilder createAntWithProjectPath:testPath];
 
+            [hillBuilder createHillWithProjectPath:testPath];
         }
     }
     return 0;

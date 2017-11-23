@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F7D88C71FC4B30B00389E9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88C61FC4B30B00389E9A /* main.m */; };
 		4F7D88CF1FC4B6F300389E9A /* AntBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88CE1FC4B6F300389E9A /* AntBuilder.m */; };
+		4F7D88D21FC4B6FF00389E9A /* HillBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88D11FC4B6FF00389E9A /* HillBuilder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		4F7D88C61FC4B30B00389E9A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F7D88CD1FC4B6F300389E9A /* AntBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AntBuilder.h; sourceTree = "<group>"; };
 		4F7D88CE1FC4B6F300389E9A /* AntBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AntBuilder.m; sourceTree = "<group>"; };
+		4F7D88D01FC4B6FF00389E9A /* HillBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HillBuilder.h; sourceTree = "<group>"; };
+		4F7D88D11FC4B6FF00389E9A /* HillBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HillBuilder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				4F7D88C61FC4B30B00389E9A /* main.m */,
+				4F7D88D01FC4B6FF00389E9A /* HillBuilder.h */,
+				4F7D88D11FC4B6FF00389E9A /* HillBuilder.m */,
 				4F7D88CD1FC4B6F300389E9A /* AntBuilder.h */,
 				4F7D88CE1FC4B6F300389E9A /* AntBuilder.m */,
 			);
@@ -125,6 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F7D88C71FC4B30B00389E9A /* main.m in Sources */,
+				4F7D88D21FC4B6FF00389E9A /* HillBuilder.m in Sources */,
 				4F7D88CF1FC4B6F300389E9A /* AntBuilder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
