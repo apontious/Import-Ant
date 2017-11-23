@@ -14,12 +14,17 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSCAssert(argc == 2, @"There should be 2 passed in arguments, but instead there are %ld", (long)argc);
 
-        NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
-
         AntBuilder *antBuilder = [[AntBuilder alloc] initWithCount:100];
 
-        [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"01 Import By Module"]];
-        [antBuilder createAntWithProjectPath:[[workspacePath stringByAppendingPathComponent:@"Tests"] stringByAppendingPathComponent:@"02 Import Individually"]];
+        NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
+        NSString *testsPath = [workspacePath stringByAppendingPathComponent:@"Tests"];
+
+        for (NSString *testName in @[@"01 Import By Module", @"02 Import Individually"]) {
+            NSString *testPath = [testsPath stringByAppendingPathComponent:testName];
+
+            [antBuilder createAntWithProjectPath:testPath];
+
+        }
     }
     return 0;
 }

@@ -8,10 +8,14 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AntBuilder : NSObject
 
+@property (nonatomic, readonly) NSUInteger count;
+
 /**
- @param count How many files to generate. A count of 100 will generate Ant000.h and Ant000.m to Ant099.h and Ant099.m.
+ @param count Number of Ant framework header/source file pairs to create. A count of 100, for example, will generate Ant000.h and Ant000.m to Ant099.h and Ant099.m.
  */
 - (instancetype)initWithCount:(NSUInteger)count;
 
@@ -25,3 +29,5 @@
 - (void)createAntWithProjectPath:(NSString *)projectPath;
 
 @end
+
+NS_ASSUME_NONNULL_END

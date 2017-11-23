@@ -25,12 +25,6 @@ static NSString *const kAntTestFileTemplate;
 static NSString *const kAntTestTemplate;
 static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS";
 
-@interface AntBuilder ()
-
-@property (nonatomic, readonly) NSUInteger count;
-
-@end
-
 @implementation AntBuilder
 
 - (instancetype)initWithCount:(NSUInteger)count {
