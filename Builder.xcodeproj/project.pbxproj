@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F07A5201FCA610100391F4B /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F07A51F1FCA610100391F4B /* FileUtils.m */; };
 		4F7D88C71FC4B30B00389E9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88C61FC4B30B00389E9A /* main.m */; };
 		4F7D88CF1FC4B6F300389E9A /* AntBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88CE1FC4B6F300389E9A /* AntBuilder.m */; };
 		4F7D88D21FC4B6FF00389E9A /* HillBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D88D11FC4B6FF00389E9A /* HillBuilder.m */; };
@@ -25,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F07A51E1FCA610100391F4B /* FileUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
+		4F07A51F1FCA610100391F4B /* FileUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
 		4F7D88C31FC4B30B00389E9A /* Builder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Builder; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F7D88C61FC4B30B00389E9A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F7D88CD1FC4B6F300389E9A /* AntBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AntBuilder.h; sourceTree = "<group>"; };
@@ -68,6 +71,8 @@
 				4F7D88D11FC4B6FF00389E9A /* HillBuilder.m */,
 				4F7D88CD1FC4B6F300389E9A /* AntBuilder.h */,
 				4F7D88CE1FC4B6F300389E9A /* AntBuilder.m */,
+				4F07A51E1FCA610100391F4B /* FileUtils.h */,
+				4F07A51F1FCA610100391F4B /* FileUtils.m */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -132,6 +137,7 @@
 				4F7D88C71FC4B30B00389E9A /* main.m in Sources */,
 				4F7D88D21FC4B6FF00389E9A /* HillBuilder.m in Sources */,
 				4F7D88CF1FC4B6F300389E9A /* AntBuilder.m in Sources */,
+				4F07A5201FCA610100391F4B /* FileUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

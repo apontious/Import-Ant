@@ -7,6 +7,7 @@
 //
 
 #import "AntBuilder.h"
+#import "FileUtils.h"
 
 static NSString *const kAntFrameworkFolderName = @"Ant";
 static NSString *const kAntFrameworkHeaderName = @"Ant.h";
@@ -51,54 +52,24 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
 
 - (void)_ant_deleteExistingFilesWithProjectPath:(NSString *)projectPath {
 
-    NSError *error;
+    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
     // Ant
     //    Ant.h
 
-    NSFileManager *fm = [NSFileManager defaultManager];
+    [fileUtils deleteFileInFolder:kAntFrameworkFolderName withName:kAntFrameworkHeaderName];
 
-    NSString *antFrameworkPath = [projectPath stringByAppendingPathComponent:kAntFrameworkFolderName];
+    // Ant
+    //    Ant0001.h/.m, etc.
 
-    NSString *antFrameworkHeaderPath = [antFrameworkPath stringByAppendingPathComponent:kAntFrameworkHeaderName];
-
-    // Don't check error - it might not exist.
-    [fm removeItemAtPath:antFrameworkHeaderPath error:nil];
-
-    //    Ant0001.h
-
-    NSArray<NSString *> *antFrameworkFileNames = [fm contentsOfDirectoryAtPath:antFrameworkPath error:&error];
-    if (!antFrameworkFileNames || error) {
-        NSLog(@"Error attempting to get names of files in %@: %@", antFrameworkPath, error);
+    if (![fileUtils deleteFilesInFolder:kAntFrameworkFolderName withRegex:@"Ant[0123456789]+\\.[hm]"]) {
         return;
-    }
-
-    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"Ant[0123456789]+\\.[hm]" options:NSRegularExpressionCaseInsensitive error:&error];
-    if (!regex || error) {
-        NSLog(@"Unable to create regex: %@", error);
-        return;
-    }
-
-    for (NSString *fileName in antFrameworkFileNames) {
-        NSRange range = [regex rangeOfFirstMatchInString:fileName options:0 range:NSMakeRange(0, fileName.length)];
-        if (range.location == 0 && range.length == fileName.length) {
-            BOOL removeResult = [fm removeItemAtPath:[antFrameworkPath stringByAppendingPathComponent:fileName] error:&error];
-            if (!removeResult || error) {
-                NSLog(@"Error attempting to delete existing file %@: %@", fileName, error);
-                return;
-            }
-        }
     }
 
     // AntTests
     //    AntTests.m
 
-    NSString *antTestsPath = [projectPath stringByAppendingPathComponent:kAntTestsFolderName];
-
-    NSString *antTestFilePath = [antTestsPath stringByAppendingPathComponent:kAntTestFileName];
-
-    // Don't check error - it might not exist.
-    [fm removeItemAtPath:antTestFilePath error:nil];
+    [fileUtils deleteFileInFolder:kAntTestsFolderName withName:kAntTestFileName];
 }
 
 /**
