@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)deleteFilesInFolder:(NSString *)folderName withRegex:(NSString *)regexPattern;
 
+/**
+ Will log an error message and return NO on any problems. Otherwise, will return YES.
+ */
+- (BOOL)writeFileWithTemplate:(NSString *)template replacingString:(NSString *)targetString withString:(NSString *)replacementString inFolder:(NSString *)folderName withName:(NSString *)fileName;
+
 @end
 
 NS_ASSUME_NONNULL_END

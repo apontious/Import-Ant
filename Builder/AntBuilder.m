@@ -98,7 +98,9 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
     return result;
 }
 
-- (NSString *)_ant_replaceFrameworkHeaderImportsInTemplate:(NSString *)template {
+- (void)_ant_createFrameworkHeaderWithProjectPath:(NSString *)projectPath {
+    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
+
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
 
     NSMutableString *headerFileNamesString = [NSMutableString new];
@@ -107,73 +109,43 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
         [headerFileNamesString appendFormat:@"#import <Ant/Ant%@.h>\n", baseNumberString];
     }
 
-    NSMutableString *result = template.mutableCopy;
-
-    [result replaceOccurrencesOfString:kAntFrameworkHeaderReplacementsString
-                            withString:headerFileNamesString
-                               options:0
-                                 range:NSMakeRange(0, result.length)];
-
-    return result;
-}
-
-- (void)_ant_createFrameworkHeaderWithProjectPath:(NSString *)projectPath {
-
-    NSString *frameworkHeaderString = [self _ant_replaceFrameworkHeaderImportsInTemplate:kAntFrameworkHeaderTemplate];
-
-    NSError *error;
-
-    BOOL result = [frameworkHeaderString writeToFile:[[projectPath stringByAppendingPathComponent:kAntFrameworkFolderName] stringByAppendingPathComponent:kAntFrameworkHeaderName]
-                                          atomically:YES
-                                            encoding:NSUTF8StringEncoding
-                                               error:&error];
-    if (!result || error) {
-        assert("error saving Ant.h");
-    }
+    [fileUtils writeFileWithTemplate:kAntFrameworkHeaderTemplate
+                     replacingString:kAntFrameworkHeaderReplacementsString
+                          withString:headerFileNamesString
+                            inFolder:kAntFrameworkFolderName
+                            withName:kAntFrameworkHeaderName];
 }
 
 - (void)_ant_createHeadersAndSourceWithProjectPath:(NSString *)projectPath {
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
 
+    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
+
     for (NSString *baseNumberString in baseNumberStrings) {
         // Header
-        NSMutableString *antHeaderString = kAntHeaderTemplate.mutableCopy;
-
-        [antHeaderString replaceOccurrencesOfString:kAntBaseNumberReplacementString
-                                         withString:baseNumberString
-                                            options:0
-                                              range:NSMakeRange(0, antHeaderString.length)];
-
-        NSError *error;
-
-        BOOL headerResult = [antHeaderString writeToFile:[[projectPath stringByAppendingPathComponent:kAntFrameworkFolderName] stringByAppendingPathComponent:[NSString stringWithFormat:@"Ant%@.h", baseNumberString]]
-                                              atomically:YES
-                                                encoding:NSUTF8StringEncoding
-                                                   error:&error];
-        if (!headerResult || error) {
-            assert("error saving Ant header");
+        if (![fileUtils writeFileWithTemplate:kAntHeaderTemplate
+                              replacingString:kAntBaseNumberReplacementString
+                                   withString:baseNumberString
+                                     inFolder:kAntFrameworkFolderName
+                                     withName:[NSString stringWithFormat:@"Ant%@.h", baseNumberString]]) {
+            break;
         }
 
         // Source
-        NSMutableString *antSourceString = kAntSourceTemplate.mutableCopy;
-
-        [antSourceString replaceOccurrencesOfString:kAntBaseNumberReplacementString
-                                         withString:baseNumberString
-                                            options:0
-                                              range:NSMakeRange(0, antSourceString.length)];
-
-        BOOL sourceResult = [antSourceString writeToFile:[[projectPath stringByAppendingPathComponent:kAntFrameworkFolderName] stringByAppendingPathComponent:[NSString stringWithFormat:@"Ant%@.m", baseNumberString]]
-                                              atomically:YES
-                                                encoding:NSUTF8StringEncoding
-                                                   error:&error];
-        if (!sourceResult || error) {
-            assert("error saving Ant source");
+        if (![fileUtils writeFileWithTemplate:kAntSourceTemplate
+                              replacingString:kAntBaseNumberReplacementString
+                                   withString:baseNumberString
+                                     inFolder:kAntFrameworkFolderName
+                                     withName:[NSString stringWithFormat:@"Ant%@.m", baseNumberString]]) {
+            break;
         }
     }
 }
 
 - (void)_ant_createTestFileWithProjectPath:(NSString *)projectPath {
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
+
+    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
     NSMutableString *testsString = [NSMutableString new];
 
@@ -188,17 +160,11 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
         [testsString appendString:testString];
     }
 
-    NSString *testFileString = [kAntTestFileTemplate stringByReplacingOccurrencesOfString:kAntTestFileTestsReplacementString withString:testsString];
-
-    NSError *error;
-
-    BOOL result = [testFileString writeToFile:[[projectPath stringByAppendingPathComponent:kAntTestsFolderName] stringByAppendingPathComponent:kAntTestFileName]
-                                          atomically:YES
-                                            encoding:NSUTF8StringEncoding
-                                               error:&error];
-    if (!result || error) {
-        assert("error saving AntTests.m");
-    }
+    [fileUtils writeFileWithTemplate:kAntTestFileTemplate
+                     replacingString:kAntTestFileTestsReplacementString
+                          withString:testsString
+                            inFolder:kAntTestsFolderName
+                            withName:kAntTestFileName];
 }
 
 @end

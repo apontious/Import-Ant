@@ -64,4 +64,29 @@
     return YES;
 }
 
+- (BOOL)writeFileWithTemplate:(NSString *)template replacingString:(NSString *)targetString withString:(NSString *)replacementString inFolder:(NSString *)folderName withName:(NSString *)fileName {
+
+    NSMutableString *string = template.mutableCopy;
+
+    [string replaceOccurrencesOfString:targetString
+                            withString:replacementString
+                               options:0
+                                 range:NSMakeRange(0, string.length)];
+
+    NSString *path = [self.projectPath stringByAppendingPathComponent:folderName];
+
+    NSError *error;
+
+    BOOL result = [string writeToFile:[path stringByAppendingPathComponent:fileName]
+                           atomically:YES
+                             encoding:NSUTF8StringEncoding
+                                error:&error];
+    if (!result || error) {
+        NSLog(@"error saving %@", fileName);
+        return NO;
+    }
+
+    return YES;
+}
+
 @end
