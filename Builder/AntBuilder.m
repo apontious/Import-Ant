@@ -41,18 +41,18 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
 }
 
 - (void)createAntWithProjectPath:(NSString *)projectPath {
-    [self _ant_deleteExistingFilesWithProjectPath:projectPath];
+    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
-    [self _ant_createFrameworkHeaderWithProjectPath:projectPath];
-    [self _ant_createHeadersAndSourceWithProjectPath:projectPath];
-    [self _ant_createTestFileWithProjectPath:projectPath];
+    [self _ant_deleteExistingFilesWithFileUtils:fileUtils];
+
+    [self _ant_createFrameworkHeaderWithFileUtils:fileUtils];
+    [self _ant_createHeadersAndSourceWithFileUtils:fileUtils];
+    [self _ant_createTestFileWithFileUtils:fileUtils];
 }
 
 #pragma mark - Private Methods
 
-- (void)_ant_deleteExistingFilesWithProjectPath:(NSString *)projectPath {
-
-    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
+- (void)_ant_deleteExistingFilesWithFileUtils:(FileUtils *)fileUtils {
 
     // Ant
     //    Ant.h
@@ -98,9 +98,7 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
     return result;
 }
 
-- (void)_ant_createFrameworkHeaderWithProjectPath:(NSString *)projectPath {
-    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
-
+- (void)_ant_createFrameworkHeaderWithFileUtils:(FileUtils *)fileUtils {
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
 
     NSMutableString *headerFileNamesString = [NSMutableString new];
@@ -116,10 +114,8 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
                             withName:kAntFrameworkHeaderName];
 }
 
-- (void)_ant_createHeadersAndSourceWithProjectPath:(NSString *)projectPath {
+- (void)_ant_createHeadersAndSourceWithFileUtils:(FileUtils *)fileUtils {
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
-
-    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
     for (NSString *baseNumberString in baseNumberStrings) {
         // Header
@@ -142,10 +138,8 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
     }
 }
 
-- (void)_ant_createTestFileWithProjectPath:(NSString *)projectPath {
+- (void)_ant_createTestFileWithFileUtils:(FileUtils *)fileUtils {
     NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
-
-    FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
     NSMutableString *testsString = [NSMutableString new];
 
