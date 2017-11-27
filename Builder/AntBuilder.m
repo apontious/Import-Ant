@@ -7,6 +7,7 @@
 //
 
 #import "AntBuilder.h"
+#import "CountUtils.h"
 #import "FileUtils.h"
 
 static NSString *const kAntFrameworkFolderName = @"Ant";
@@ -72,34 +73,8 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
     [fileUtils deleteFileInFolder:kAntTestsFolderName withName:kAntTestFileName];
 }
 
-/**
- 001 to 099, for example, or 01 to 09, or 0001 to 0999.
-
- Can be easily combined with prefixes and suffixes for header or source file names or method names or string results.
- */
-- (NSMutableArray<NSString *> *)_ant_antBaseNumberStrings {
-    NSString *temp = [NSString stringWithFormat:@"%lu", (unsigned long)(self.count - 1)];
-    const NSUInteger maxDigits = temp.length;
-
-    if (maxDigits > 6) {
-        assert("Not expecting count to be > 999999");
-    }
-
-    NSMutableArray<NSString *> *result = [NSMutableArray new];
-
-    for (NSUInteger i = 0; i < self.count; i++) {
-        NSString *numberString = [NSString stringWithFormat:@"%lu", (unsigned long)i];
-
-        [result addObject:[NSString stringWithFormat:@"%@%@",
-                           [@"0000000" substringToIndex:maxDigits + 1 - numberString.length],
-                           numberString]];
-    }
-
-    return result;
-}
-
 - (void)_ant_createFrameworkHeaderWithFileUtils:(FileUtils *)fileUtils {
-    NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
     NSMutableString *headerFileNamesString = [NSMutableString new];
 
@@ -115,7 +90,7 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
 }
 
 - (void)_ant_createHeadersAndSourceWithFileUtils:(FileUtils *)fileUtils {
-    NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
     for (NSString *baseNumberString in baseNumberStrings) {
         // Header
@@ -139,7 +114,7 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
 }
 
 - (void)_ant_createTestFileWithFileUtils:(FileUtils *)fileUtils {
-    NSArray<NSString *> *baseNumberStrings = [self _ant_antBaseNumberStrings];
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
     NSMutableString *testsString = [NSMutableString new];
 
