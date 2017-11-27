@@ -3,7 +3,8 @@
 //  Builder
 //
 //  Created by Andrew Pontious on 11/21/17.
-//  Copyright © 2017 Andrew Pontious. All rights reserved.
+//  Copyright © 2017 Andrew Pontious.
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php
 //
 
 #import "CountUtils.h"
@@ -117,7 +118,8 @@ static NSString *const kHillAppDelegateSourceTemplate = \
 //  Hill\n\
 //\n\
 //  Created by Andrew Pontious on 11/21/17.\n\
-//  Copyright © 2017 Andrew Pontious. All rights reserved.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
 //\n\
 \n\
 #import \"AppDelegate.h\"\n\

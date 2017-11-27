@@ -3,7 +3,8 @@
 //  Builder
 //
 //  Created by Andrew Pontious on 11/21/17.
-//  Copyright © 2017 Andrew Pontious. All rights reserved.
+//  Copyright © 2017 Andrew Pontious.
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php
 //
 
 #import "AntBuilder.h"
@@ -144,7 +145,8 @@ static NSString *const kAntFrameworkHeaderTemplate =
 //  Ant\n\
 //\n\
 //  Created by Andrew Pontious on 11/21/17.\n\
-//  Copyright © 2017 Andrew Pontious. All rights reserved.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
 //\n\
 \n\
 @import Foundation;\n\
@@ -157,7 +159,8 @@ static NSString *const kAntHeaderTemplate =
 //  Ant\n\
 //\n\
 //  Created by Andrew Pontious on 11/21/17.\n\
-//  Copyright © 2017 Andrew Pontious. All rights reserved.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
 //\n\
 \n\
 @import Foundation;\n\
@@ -175,7 +178,8 @@ static NSString *const kAntSourceTemplate =
 //  Ant\n\
 //\n\
 //  Created by Andrew Pontious on 11/21/17.\n\
-//  Copyright © 2017 Andrew Pontious. All rights reserved.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
 //\n\
 \n\
 #import \"AntBASE_NUMBER.h\"\n\
@@ -195,7 +199,8 @@ static NSString *const kAntTestFileTemplate =
 //  AntTests\n\
 //\n\
 //  Created by Andrew Pontious on 11/21/17.\n\
-//  Copyright © 2017 Andrew Pontious. All rights reserved.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
 //\n\
 \n\
 @import XCTest;\n\

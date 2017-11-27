@@ -3,7 +3,8 @@
 //  Builder
 //
 //  Created by Andrew Pontious on 11/25/17.
-//  Copyright © 2017 Andrew Pontious. All rights reserved.
+//  Copyright © 2017 Andrew Pontious.
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php
 //
 
 @import Foundation;
