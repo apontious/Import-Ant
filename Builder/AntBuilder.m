@@ -52,6 +52,17 @@ static NSString *const kAntTestFileTestsReplacementString = @"TEST_REPLACEMENTS"
     [self _ant_createTestFileWithFileUtils:fileUtils];
 }
 
+- (NSString *)antNumberForIndex:(NSUInteger)index inCount:(NSUInteger)count {
+    const NSUInteger interval = count / self.count;
+
+    const NSUInteger number = index / interval;
+
+    // If we cared about performance, we'd cache this. (But we don't.)
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
+
+    return baseNumberStrings[number];
+}
+
 #pragma mark - Private Methods
 
 - (void)_ant_deleteExistingFilesWithFileUtils:(FileUtils *)fileUtils {
