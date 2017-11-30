@@ -78,28 +78,19 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
 - (void)_hill_createAppDelegateSourceWithFileUtils:(FileUtils *)fileUtils {
     NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
-    // Replacement #1: imports
-
     NSMutableString *headerFileNamesString = [NSMutableString new];
-
     for (NSString *baseNumberString in baseNumberStrings) {
         [headerFileNamesString appendFormat:@"#import \"Hill%@.h\"\n", baseNumberString];
     }
 
-    NSString *modifiedTemplate = [kHillAppDelegateSourceTemplate stringByReplacingOccurrencesOfString:kHillAppDelegateSourceImportReplacementsString
-                                                                                           withString:headerFileNamesString];
-
-    // Replacement #2: method calls
-
     NSMutableString *methodCallsString = [NSMutableString new];
-
     for (NSString *baseNumberString in baseNumberStrings) {
-        [methodCallsString appendFormat:@"    NSLog(@\"%%@\", [Hill%@ hill%@];\n", baseNumberString, baseNumberString];
+        [methodCallsString appendFormat:@"    NSLog(@\"%%@\", [Hill%@ hill%@]);\n", baseNumberString, baseNumberString];
     }
 
-    [fileUtils writeFileWithTemplate:modifiedTemplate
-                     replacingString:kHillAppDelegateSourceMethodCallReplacementsString
-                          withString:methodCallsString
+    [fileUtils writeFileWithTemplate:kHillAppDelegateSourceTemplate
+                    replacingStrings:@[kHillAppDelegateSourceImportReplacementsString, kHillAppDelegateSourceMethodCallReplacementsString]
+                         withStrings:@[headerFileNamesString, methodCallsString]
                             inFolder:kHillAppFolderName
                             withName:kHillAppDelegateSourceName];
 }

@@ -66,13 +66,24 @@
 }
 
 - (BOOL)writeFileWithTemplate:(NSString *)template replacingString:(NSString *)targetString withString:(NSString *)replacementString inFolder:(NSString *)folderName withName:(NSString *)fileName {
+    return [self writeFileWithTemplate:template replacingStrings:@[targetString] withStrings:@[replacementString] inFolder:folderName withName:fileName];
+}
+
+- (BOOL)writeFileWithTemplate:(NSString *)template replacingStrings:(NSArray<NSString *> *)targetStrings withStrings:(NSArray<NSString *> *)replacementStrings inFolder:(NSString *)folderName withName:(NSString *)fileName {
 
     NSMutableString *string = template.mutableCopy;
 
-    [string replaceOccurrencesOfString:targetString
-                            withString:replacementString
-                               options:0
-                                 range:NSMakeRange(0, string.length)];
+    NSUInteger i = 0;
+    for (NSString *targetString in targetStrings) {
+        NSString *replacementString = replacementStrings[i];
+
+        [string replaceOccurrencesOfString:targetString
+                                withString:replacementString
+                                   options:0
+                                     range:NSMakeRange(0, string.length)];
+
+        i++;
+    }
 
     NSString *path = [self.projectPath stringByAppendingPathComponent:folderName];
 

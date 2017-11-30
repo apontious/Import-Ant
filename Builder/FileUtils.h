@@ -36,6 +36,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)writeFileWithTemplate:(NSString *)template replacingString:(NSString *)targetString withString:(NSString *)replacementString inFolder:(NSString *)folderName withName:(NSString *)fileName;
 
+/**
+ Variant that can replace more than one target string with its matching replacement string.
+
+ Will log an error message and return NO on any problems. Otherwise, will return YES.
+ */
+- (BOOL)writeFileWithTemplate:(NSString *)template replacingStrings:(NSArray<NSString *> *)targetStrings withStrings:(NSArray<NSString *> *)replacementStrings inFolder:(NSString *)folderName withName:(NSString *)fileName;
+
 @end
 
 NS_ASSUME_NONNULL_END
