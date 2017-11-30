@@ -140,7 +140,7 @@ static NSString *const kHillAppDelegateSourceTemplate = \
 \n\
 #import \"AppDelegate.h\"\n\
 \n\
-FRAMEWORK_IMPORT_REPLACEMENTS\n\
+IMPORT_REPLACEMENTS\n\
 @implementation AppDelegate\n\
 \n\
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {\n\
