@@ -22,13 +22,25 @@ int main(int argc, const char * argv[]) {
         NSString *workspacePath = [NSString stringWithUTF8String:argv[1]];
         NSString *testsPath = [workspacePath stringByAppendingPathComponent:@"Tests"];
 
-        for (NSString *testName in @[@"01 Import By Module", @"02 Import Individually"]) {
-            NSString *testPath = [testsPath stringByAppendingPathComponent:testName];
+        {{
+            NSString *testPath = [testsPath stringByAppendingPathComponent:@"01 Import By Module"];
 
             [antBuilder createAntWithProjectPath:testPath];
 
-            [hillBuilder createHillWithProjectPath:testPath];
-        }
+            [hillBuilder createHillWithProjectPath:testPath importAntHandler:^NSString *(NSUInteger index, HillBuilder *hillBuilder) {
+                return @"@import Ant;";
+            }];
+        }}
+
+        {{
+            NSString *testPath = [testsPath stringByAppendingPathComponent:@"02 Import Individually"];
+
+            [antBuilder createAntWithProjectPath:testPath];
+
+            [hillBuilder createHillWithProjectPath:testPath importAntHandler:^NSString *(NSUInteger index, HillBuilder *hillBuilder) {
+                return [NSString stringWithFormat:@"@import Ant.Ant%@;", [hillBuilder.antBuilder antNumberForIndex:index inCount:hillBuilder.count]];
+            }];
+        }}
     }
     return 0;
 }

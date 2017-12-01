@@ -25,6 +25,7 @@ static NSString *const kHillHeaderTemplate;
 static NSString *const kHillSourceTemplate;
 static NSString *const kHillBaseNumberReplacementString = @"BASE_NUMBER";
 static NSString *const kHillAntNumberReplacementString = @"ANT_NUMBER";
+static NSString *const kHillImportantAntReplacementString = @"IMPORT_ANT_REPLACEMENT";
 
 static NSString *const kHillTestsFolderName = @"HillTests";
 static NSString *const kHillTestFileName = @"HillTests.m";
@@ -44,13 +45,13 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
     return self;
 }
 
-- (void)createHillWithProjectPath:(NSString *)projectPath {
+- (void)createHillWithProjectPath:(NSString *)projectPath importAntHandler:(HillBuilderImportAntHandler)importAntHandler {
     FileUtils *fileUtils = [[FileUtils alloc] initWithProjectPath:projectPath];
 
     [self _hill_deleteExistingFilesWithProjectPath:projectPath];
 
     [self _hill_createAppDelegateSourceWithFileUtils:fileUtils];
-    [self _hill_createHeadersAndSourceWithFileUtils:fileUtils];
+    [self _hill_createHeadersAndSourceWithFileUtils:fileUtils importAntHandler:importAntHandler];
     [self _hill_createTestFileWithFileUtils:fileUtils];
 }
 
@@ -104,10 +105,12 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
                             withName:kHillAppDelegateSourceName];
 }
 
-- (void)_hill_createHeadersAndSourceWithFileUtils:(FileUtils *)fileUtils {
+- (void)_hill_createHeadersAndSourceWithFileUtils:(FileUtils *)fileUtils importAntHandler:(HillBuilderImportAntHandler)importAntHandler {
     NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
     for (NSString *baseNumberString in baseNumberStrings) {
+        NSUInteger index = [baseNumberString longLongValue];
+
         // Header
         if (![fileUtils writeFileWithTemplate:kHillHeaderTemplate
                               replacingString:kHillBaseNumberReplacementString
@@ -118,11 +121,12 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
         }
 
         // Source
-        NSString *antNumberString = [self.antBuilder antNumberForIndex:[baseNumberString longLongValue] inCount:self.count];
+        NSString *importAntString = importAntHandler(index, self);
+        NSString *antNumberString = [self.antBuilder antNumberForIndex:index inCount:self.count];
 
         if (![fileUtils writeFileWithTemplate:kHillSourceTemplate
-                             replacingStrings:@[kHillAntNumberReplacementString, kHillBaseNumberReplacementString]
-                                  withStrings:@[antNumberString, baseNumberString]
+                             replacingStrings:@[kHillImportantAntReplacementString, kHillAntNumberReplacementString, kHillBaseNumberReplacementString]
+                                  withStrings:@[importAntString, antNumberString, baseNumberString]
                                      inFolder:kHillAppFolderName
                                      withName:[NSString stringWithFormat:@"Hill%@.m", baseNumberString]]) {
             break;
@@ -218,7 +222,7 @@ static NSString *const kHillSourceTemplate = \
 \n\
 #import \"HillBASE_NUMBER.h\"\n\
 \n\
-@import Ant;\n\
+IMPORT_ANT_REPLACEMENT\n\
 \n\
 @implementation HillBASE_NUMBER\n\
 \n\

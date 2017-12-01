@@ -10,8 +10,11 @@
 @import Foundation;
 
 @class AntBuilder;
+@class HillBuilder;
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NSString * __nonnull (^HillBuilderImportAntHandler)(NSUInteger index, HillBuilder * __nonnull hillBuilder);
 
 @interface HillBuilder : NSObject
 
@@ -30,8 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
  Also deletes existing test files at projectPath + Hill app test directory and creates ones according to count.
 
  Does not add these files to project - that part can be automated, but it's a pain, so I'm leaving it to do by hand.
+
+ @param importAntHandler Block to generate the correct version of @import Ant; for this test.
  */
-- (void)createHillWithProjectPath:(NSString *)projectPath;
+- (void)createHillWithProjectPath:(NSString *)projectPath importAntHandler:(HillBuilderImportAntHandler)importAntHandler;
 
 @end
 
