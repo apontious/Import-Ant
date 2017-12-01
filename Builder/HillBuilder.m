@@ -14,10 +14,11 @@
 
 static NSString *const kHillAppFolderName = @"Hill";
 
+static NSString *const kHillImportReplacementsString = @"IMPORT_REPLACEMENTS";
+
 static NSString *const kHillAppDelegateSourceName = @"AppDelegate.m";
 
 static NSString *const kHillAppDelegateSourceTemplate;
-static NSString *const kHillAppDelegateSourceImportReplacementsString = @"IMPORT_REPLACEMENTS";
 static NSString *const kHillAppDelegateSourceMethodCallReplacementsString = @"METHOD_CALL_REPLACEMENTS";
 
 static NSString *const kHillHeaderTemplate;
@@ -77,13 +78,19 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
     [fileUtils deleteFileInFolder:kHillTestsFolderName withName:kHillTestFileName];
 }
 
-- (void)_hill_createAppDelegateSourceWithFileUtils:(FileUtils *)fileUtils {
+- (NSString *)_hill_importReplacements {
     NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
-    NSMutableString *headerFileNamesString = [NSMutableString new];
+    NSMutableString *importReplacements = [NSMutableString new];
     for (NSString *baseNumberString in baseNumberStrings) {
-        [headerFileNamesString appendFormat:@"#import \"Hill%@.h\"\n", baseNumberString];
+        [importReplacements appendFormat:@"#import \"Hill%@.h\"\n", baseNumberString];
     }
+
+    return importReplacements;
+}
+
+- (void)_hill_createAppDelegateSourceWithFileUtils:(FileUtils *)fileUtils {
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
 
     NSMutableString *methodCallsString = [NSMutableString new];
     for (NSString *baseNumberString in baseNumberStrings) {
@@ -91,8 +98,8 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
     }
 
     [fileUtils writeFileWithTemplate:kHillAppDelegateSourceTemplate
-                    replacingStrings:@[kHillAppDelegateSourceImportReplacementsString, kHillAppDelegateSourceMethodCallReplacementsString]
-                         withStrings:@[headerFileNamesString, methodCallsString]
+                    replacingStrings:@[kHillImportReplacementsString, kHillAppDelegateSourceMethodCallReplacementsString]
+                         withStrings:@[[self _hill_importReplacements], methodCallsString]
                             inFolder:kHillAppFolderName
                             withName:kHillAppDelegateSourceName];
 }
@@ -124,6 +131,33 @@ static NSString *const kHillTestFileTestsReplacementString = @"TEST_REPLACEMENTS
 }
 
 - (void)_hill_createTestFileWithFileUtils:(FileUtils *)fileUtils {
+    NSArray<NSString *> *baseNumberStrings = [CountUtils numberStringsForCount:self.count];
+
+    NSMutableString *testsString = [NSMutableString new];
+
+    for (NSString *baseNumberString in baseNumberStrings) {
+        NSMutableString *testString = kHillTestTemplate.mutableCopy;
+
+        [testString replaceOccurrencesOfString:kHillBaseNumberReplacementString
+                                    withString:baseNumberString
+                                       options:0
+                                         range:NSMakeRange(0, testString.length)];
+
+        NSString *antNumberString = [self.antBuilder antNumberForIndex:[baseNumberString longLongValue] inCount:self.count];
+
+        [testString replaceOccurrencesOfString:kHillAntNumberReplacementString
+                                    withString:antNumberString
+                                       options:0
+                                         range:NSMakeRange(0, testString.length)];
+
+        [testsString appendString:testString];
+    }
+
+    [fileUtils writeFileWithTemplate:kHillTestFileTemplate
+                    replacingStrings:@[kHillImportReplacementsString, kHillTestFileTestsReplacementString]
+                         withStrings:@[[self _hill_importReplacements], testsString]
+                            inFolder:kHillTestsFolderName
+                            withName:kHillTestFileName];
 }
 
 @end
@@ -195,4 +229,33 @@ static NSString *const kHillSourceTemplate = \
 }\n\
 \n\
 @end\n\
+";
+
+static NSString *const kHillTestFileTemplate =
+@"//\n\
+//  HillTests.m\n\
+//  HillTests\n\
+//\n\
+//  Created by Andrew Pontious on 11/21/17.\n\
+//  Copyright © 2017 Andrew Pontious.\n\
+//  Some rights reserved: http://opensource.org/licenses/mit-license.php\n\
+//\n\
+\n\
+@import XCTest;\n\
+\n\
+IMPORT_REPLACEMENTS\n\
+@interface HillTests : XCTestCase\n\
+\n\
+@end\n\
+\n\
+@implementation HillTests\n\
+TEST_REPLACEMENTS\n\
+@end\n\
+";
+
+static NSString *const kHillTestTemplate =
+@"\n\
+- (void)testHillBASE_NUMBER {\n\
+    XCTAssertEqualObjects(HillBASE_NUMBER.hillBASE_NUMBER, @\"antANT_NUMBER\", @\"Method should produce given string\");\n\
+}\n\
 ";
