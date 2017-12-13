@@ -41,6 +41,25 @@ int main(int argc, const char * argv[]) {
                 return [NSString stringWithFormat:@"@import Ant.Ant%@;", [hillBuilder.antBuilder antNumberForIndex:index inCount:hillBuilder.count]];
             }];
         }}
+        {{
+            NSString *testPath = [testsPath stringByAppendingPathComponent:@"03 Import by Framework"];
+
+            [antBuilder createAntWithProjectPath:testPath];
+
+            [hillBuilder createHillWithProjectPath:testPath importAntHandler:^NSString *(NSUInteger index, HillBuilder *hillBuilder) {
+                return @"#import <Ant/Ant.h>";
+            }];
+        }}
+
+        {{
+            NSString *testPath = [testsPath stringByAppendingPathComponent:@"04 Import by File"];
+
+            [antBuilder createAntWithProjectPath:testPath];
+
+            [hillBuilder createHillWithProjectPath:testPath importAntHandler:^NSString *(NSUInteger index, HillBuilder *hillBuilder) {
+                return [NSString stringWithFormat:@"#import <Ant/Ant%@.h>", [hillBuilder.antBuilder antNumberForIndex:index inCount:hillBuilder.count]];
+            }];
+        }}
     }
     return 0;
 }
