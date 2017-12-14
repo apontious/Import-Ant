@@ -21,5 +21,19 @@
             location = "group:Hill.xcodeproj">
          </FileRef>
       </Group>
+      <Group
+         location = "group:03 Import by Framework"
+         name = "03 Import by Framework">
+         <FileRef
+            location = "group:Hill.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:04 Import by File"
+         name = "04 Import by File">
+         <FileRef
+            location = "group:Hill.xcodeproj">
+         </FileRef>
+      </Group>
    </Group>
 </Workspace>
